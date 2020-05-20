@@ -6,12 +6,15 @@ from PIL import Image
 
 # TODO docstring for CvedEncryptor class
 class CvedEncryptor():
-
+    emojis = {
+        "check_mark_button":    "\U00002705",
+        "cross_mark":           "\U0000274C"
+    }
 
     def gen_image_from_transparence(self, trans):
         """Generate an image from a transparence 2D array
         
-        Generate an image object ready save or plot from a transparence (2D numpy array)
+        Generate an image object (ready to be saved or plotted) from a transparence (2D numpy array)
 
         Parameters
         ----------
@@ -23,7 +26,7 @@ class CvedEncryptor():
         im: object
             Image object
         """
-        trans_im = np.expand_dims(255 *trans, axis=2)
+        trans_im = np.expand_dims(255*trans, axis=2)
         trans_im = np.where(trans_im==[255], [255,255,255], [0,0,0]).astype(np.uint8)
         im = Image.fromarray(trans_im)
         return im
@@ -44,13 +47,18 @@ class CvedEncryptor():
             Name for the generated file
         """
         if(path_im==""):
-            dirpath = os.getcwd() + im_name
-            im.save(dirpath)
+            try:
+                dirpath = os.getcwd() + im_name
+                im.save(dirpath)
+                print(self.emojis["check_mark_button"] + f" Image successfully saved at {dirpath}")
+            except:
+                print(self.emojis["cross_mark"] + " Unable to correctly save the image")
         else:
             try:
                 im.save(path_im)
+                print(self.emojis["check_mark_button"] + f" Image successfully saved at {path_im}")
             except:
-                print("Unable to find the path specified")
+                print(self.emojis["cross_mark"] + " Unable to find the path specified")
     
 
     def generate_qr(self, text, save_im=False, path_im=""):
