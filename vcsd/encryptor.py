@@ -130,11 +130,10 @@ class CvedEncryptor():
                 if qr_code_matrix[qr_row, qr_column] == 0:
                     trans_A[start_row:end_row, start_column:end_column] = random_bin
                     trans_B[start_row:end_row, start_column:end_column] = random_bin
-                    
-                if qr_code_matrix[qr_row, qr_column] == 1:
+                else:
                     trans_A[start_row:end_row, start_column:end_column] = random_bin
                     random_bin_inv = np.where(random_bin==0, 1, 0)
-                    trans_B[start_row:end_row, start_column:end_column] = random_bin_inv
+                    trans_B[start_row:end_row, start_column:end_column] = random_bin_inv 
                     
             it.iternext()
         
