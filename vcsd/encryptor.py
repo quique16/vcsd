@@ -24,7 +24,7 @@ class CvedEncryptor():
         Returns
         -------
         im: object
-            Image object
+            Image object, instance of the PIL Image class
         """
         trans_im = np.expand_dims(255*trans, axis=2)
         trans_im = np.where(trans_im==[255], [255,255,255], [0,0,0]).astype(np.uint8)
@@ -40,7 +40,7 @@ class CvedEncryptor():
         Parameters
         ----------
         im: object
-            Image object
+            Image object, instance of the PIL Image class
         path_im: str
             Absolute path where to store the qr image file
         im_name: str, default="/image_gen.png"
@@ -49,13 +49,13 @@ class CvedEncryptor():
         if(path_im==""):
             try:
                 dirpath = os.getcwd() + im_name
-                im.save(dirpath)
+                im.save(dirpath, 'png')
                 print(self.emojis["check_mark_button"] + f" Image successfully saved at {dirpath}")
             except:
                 print(self.emojis["cross_mark"] + " Unable to correctly save the image")
         else:
             try:
-                im.save(path_im)
+                im.save(path_im, 'png')
                 print(self.emojis["check_mark_button"] + f" Image successfully saved at {path_im}")
             except:
                 print(self.emojis["cross_mark"] + " Unable to find the path specified")
@@ -140,8 +140,8 @@ class CvedEncryptor():
         if(save_ims):
             im_A = self.gen_image_from_transparence(trans_A)
             im_B = self.gen_image_from_transparence(trans_B)
-            self.save_image(im_A, path_im_A, im_name="/trans_A_gen.png")   
-            self.save_image(im_B, path_im_B, im_name="/trans_B_gen.png")
+            self.save_image(im=im_A, path_im=path_im_A, im_name="/trans_A_gen.png")   
+            self.save_image(im=im_B, path_im=path_im_B, im_name="/trans_B_gen.png")
 
         return trans_A, trans_B
     
