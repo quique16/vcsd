@@ -32,7 +32,7 @@ class CvedEncryptor():
         return im
 
 
-    def save_image(self, im, path_im, im_name="/image_gen.png"):
+    def save_im(self, im, path_im, im_name="/image_gen.png"):
         """Save an image file from an image object
         
         Save a file with an image generated from an incoming image object
@@ -61,7 +61,7 @@ class CvedEncryptor():
                 print(self.emojis["cross_mark"] + " Unable to find the path specified")
     
 
-    def generate_qr(self, text, save_im=False, path_im=""):
+    def generate_qr(self, data, save_im=False, path_im=""):
         """Generate QR code from the text specified
         
         Generate a QR code object containing the text specified in the arguments
@@ -77,27 +77,31 @@ class CvedEncryptor():
 
         Returns
         -------
-        qr_code: object
-            QR code python object, instance of the qrcode class
+        qr_code_matrix: ndarray
+            QR code matrix, a 2D array representing the QR code
         """
-        qr_code = qrcode.QRCode()
-        qr_code.add_data(text)
+        qr_code = qrcode.QRCode(border=0)
+        qr_code.add_data(data)
         qr_code.make(fit=True)
         im = qr_code.make_image()
+        qr_code_matrix = np.array(qr_code.get_matrix()).astype(int)
+
+        # this should be separated in other function (maybe the composed ones)
         if(save_im):
-            self.save_image(im, path_im, im_name="/qr_code_gen.png")        
-        return qr_code
+            self.save_im(im, path_im, im_name="/qr_code_gen.png")
+           
+        return qr_code_matrix
 
 
-    def generate_transparences(self, qr_code, save_ims=False, path_im_A="", path_im_B=""):
+    def generate_transparences(self, qr_code_matrix, save_ims=False, path_im_A="", path_im_B=""):
         """Generate 2 transparences from a qr_code object
         
         Generate 2 transparences (trans_A and trans_B) from a qr_code object. If the qr code consist on a matrix of size (n x n), the size of the transparences is the double: N = 2*n, (N x N).
 
         Parameters
         ----------
-        qr_code: object
-            QR code python object, instance of the qrcode class
+        qr_code_matrix: ndarray
+            QR code matrix, a 2D array representing the QR code
 
         Returns
         -------
@@ -106,7 +110,6 @@ class CvedEncryptor():
         trans_B: ndarray
             Transparence B, a 2D array computed from the QR code
         """
-        qr_code_matrix = np.array(qr_code.get_matrix()).astype(int)
         trans_A = np.zeros([x * 2 for x in qr_code_matrix.shape], dtype=qr_code_matrix.dtype)
         trans_B = np.zeros([x * 2 for x in qr_code_matrix.shape], dtype=qr_code_matrix.dtype)
         
@@ -137,11 +140,12 @@ class CvedEncryptor():
                     
             it.iternext()
         
+        # this should be separated in other function (maybe the composed ones)
         if(save_ims):
             im_A = self.gen_image_from_transparence(trans_A)
             im_B = self.gen_image_from_transparence(trans_B)
-            self.save_image(im=im_A, path_im=path_im_A, im_name="/trans_A_gen.png")   
-            self.save_image(im=im_B, path_im=path_im_B, im_name="/trans_B_gen.png")
+            self.save_im(im=im_A, path_im=path_im_A, im_name="/trans_A_gen.png")   
+            self.save_im(im=im_B, path_im=path_im_B, im_name="/trans_B_gen.png")
 
         return trans_A, trans_B
     
