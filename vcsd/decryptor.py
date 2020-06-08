@@ -101,9 +101,25 @@ class CvedDecryptor():
 
 
     def load_and_validate_trans(self, path_im_A="", path_im_B=""):
-        """
-        """
+        """Load and validate the image files of the pair of transparencies
 
+        Load the image files (in .png format) of the pair of transparencies, check if they are equal sized and the version of the QR code they contain.
+        If checks are successful return each transpacencie of the pair as a 2D numpy array.
+
+        Parameters
+        ----------
+        path_im_A: str
+            Absolute path where the image (in .png format) of the transparence A is stored
+        path_im_B: str
+            Absolute path where the image (in .png format) of the transparence B is stored
+
+        Returns
+        -------
+        trans_A: ndarray
+            Transparence A, a 2D array computed from the QR code
+        trans_B: ndarray
+            Transparence B, a 2D array computed from the QR code
+        """
         # load images with transparencies
         im_trans_A = self.load_im(path_im=path_im_A)
         im_trans_B = self.load_im(path_im=path_im_B) 
@@ -135,9 +151,23 @@ class CvedDecryptor():
 
     
     def extract_qr_from_transparences(self, trans_A, trans_B):
-        """
-        """
+        """Extract the QR code from a pair of transparencies
+        
+        Extract a qr code matrix (2D numpy array) from a pair of transparencies.
+        If the size of the transparencies is (N x N), the extracted qr code will consist on a matrix of size (n x n), n = N/2.
 
+        Parameters
+        ----------
+        trans_A: ndarray
+            Transparence A, a 2D array computed from the QR code
+        trans_B: ndarray
+            Transparence B, a 2D array computed from the QR code
+        
+        Returns
+        -------
+        qr_matrix_rec: ndarray
+            QR code matrix, a 2D array representing the QR code
+        """
         # recover QR code matrix applying visual criptography   
         qr_rec_XOR = trans_A != trans_B
         submatrix_size = 2
@@ -146,14 +176,25 @@ class CvedDecryptor():
         return qr_matrix_rec
 
 
-    # TODO create extract_text_from_qr
-    # def extract_text_from_qr(qr_code):
-    #   return text
-
     def extract_data_from_qr_matrix(self, qr_matrix_rec, save_im=False, path_im_QR_rec=""):
-        """
-        """
+        """Extract the data from the QR code specified
+        
+        Extract the text data from the QR code matrix specified
 
+        Parameters
+        ----------
+        qr_matrix_rec: ndarray
+            QR code matrix, a 2D array representing the QR code
+        save_im: bool, default=False
+            Whether to save QR or not (location by default ir current directory)
+        path_im_QR_rec: str
+            Absolute path where to store the image file of the qr code introduced
+
+        Returns
+        -------
+        data: str
+            The text data extracted from the QR code
+        """
         # convert that matrix into qr_code object
         qr_version = qr_size_version_dict[len(qr_matrix_rec)]
         qr_code = qrcode.QRCode(version=qr_version, border=1)
