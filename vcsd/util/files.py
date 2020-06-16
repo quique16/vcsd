@@ -95,13 +95,13 @@ def save_im(im, path_im, im_name="/image_gen.png"):
             im.save(dirpath, 'png')
             print(EMOJIS["check_mark_button"] + f" Image successfully saved at {dirpath}")
         except:
-            print(EMOJIS["cross_mark"] + " Unable to correctly save the image")
+            print(EMOJIS["cross_mark"] + f" Unable to correctly save the image at {dirpath}")
     else:
         try:
             im.save(path_im, 'png')
             print(EMOJIS["check_mark_button"] + f" Image successfully saved at {path_im}")
         except:
-            print(EMOJIS["cross_mark"] + " Unable to find the path specified")
+            print(EMOJIS["cross_mark"] + f" Unable to find the path specified: {path_im}")
 
 
 
@@ -154,21 +154,28 @@ def load_and_validate_trans(path_im_A="", path_im_B=""):
     trans_B: ndarray
         Transparence B, a 2D array computed from the QR code
     """
+    
     # load images with transparencies
     im_trans_A = load_im(path_im=path_im_A)
     im_trans_B = load_im(path_im=path_im_B) 
     
-    # extract binary matrices
-    trans_A = gen_transparence_from_image(im_trans_A)
-    trans_B = gen_transparence_from_image(im_trans_B)
-    
-    # determine version of the hidden qr code
-    if(len(trans_A) == len(trans_B)):
-        print(EMOJIS["check_mark_button"] + " Loaded transparences are equally sized")
-        qr_size = round(len(trans_A)/2)
-        detected_version = self.QR_SIZE_VERSION_DICT[qr_size]
-        print(EMOJIS["magnifying_glass"] + f" Loaded transparences correspond to a QR code version {detected_version}")
-    else:
-        print(EMOJIS["cross_mark"] + f" There is size mismatch between both transparencies: {trans_A.shape} and {trans_B.shape}. They need to be equally sized")
+    if(im_trans_A and im_trans_B):
+        try:
+            # extract binary matrices
+            trans_A = gen_transparence_from_image(im_trans_A)
+            trans_B = gen_transparence_from_image(im_trans_B)
+        except:
+            print(EMOJIS["cross_mark"] + f" Unable to properly extract the transparencies information from the loaded images")
         
-    return trans_A, trans_B
+        # determine version of the hidden qr code
+        if(len(trans_A) == len(trans_B)):
+            print(EMOJIS["check_mark_button"] + " Loaded transparences are equally sized")
+            qr_size = round(len(trans_A)/2)
+            detected_version = QR_SIZE_VERSION_DICT[qr_size]
+            print(EMOJIS["magnifying_glass"] + f" Loaded transparences correspond to a QR code version {detected_version}")
+        else:
+            print(EMOJIS["cross_mark"] + f" There is size mismatch between both transparencies: {trans_A.shape} and {trans_B.shape}. They need to be equally sized")
+            
+        return trans_A, trans_B
+
+   
