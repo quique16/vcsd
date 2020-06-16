@@ -4,76 +4,27 @@ import random
 import numpy as np
 from PIL import Image
 
+import vcsd.util as util
+
 # TODO docstring for CvedEncryptor class
 class CvedEncryptor():
-    emojis = {
-        "check_mark_button":    "\U00002705",
-        "cross_mark":           "\U0000274C"
-    }
+    '''
+    '''
 
-    def gen_image_from_transparence(self, trans):
-        """Generate an image from a transparence 2D array
-        
-        Generate an image object (ready to be saved or plotted) from a transparence (2D numpy array)
-
-        Parameters
-        ----------
-        trans: ndarray
-            Transparence, a 2D array computed from the QR code
-        
-        Returns
-        -------
-        im: object
-            Image object, instance of the PIL Image class
-        """
-        trans_im = np.expand_dims(255*trans, axis=2)
-        trans_im = np.where(trans_im==[255], [255,255,255], [0,0,0]).astype(np.uint8)
-        im = Image.fromarray(trans_im)
-        return im
-
-
-    def save_im(self, im, path_im, im_name="/image_gen.png"):
-        """Save an image file from an image object
-        
-        Save a file with an image generated from an incoming image object
-
-        Parameters
-        ----------
-        im: object
-            Image object, instance of the PIL Image class
-        path_im: str
-            Absolute path where to store the qr image file
-        im_name: str, default="/image_gen.png"
-            Name for the generated file
-        """
-        if(path_im==""):
-            try:
-                dirpath = os.getcwd() + im_name
-                im.save(dirpath, 'png')
-                print(self.emojis["check_mark_button"] + f" Image successfully saved at {dirpath}")
-            except:
-                print(self.emojis["cross_mark"] + " Unable to correctly save the image")
-        else:
-            try:
-                im.save(path_im, 'png')
-                print(self.emojis["check_mark_button"] + f" Image successfully saved at {path_im}")
-            except:
-                print(self.emojis["cross_mark"] + " Unable to find the path specified")
-    
 
     def generate_qr(self, data, save_im=False, path_im=""):
         """Generate QR code from the text specified
         
-        Generate a QR code object containing the text specified in the arguments
+        Generate a matrix with the QR code that contains the text specified in the arguments
 
         Parameters
         ----------
-        text: str
+        data: str
             The text to be added in the QR code
         save_im: bool, default=False
             Whether to save QR or not (location by default ir current directory)
         path_im: str
-            Absolute path where to store the qr image file
+            Absolute path where to store the image file of the qr code generated
 
         Returns
         -------
@@ -88,7 +39,7 @@ class CvedEncryptor():
 
         # this should be separated in other function (maybe the composed ones)
         if(save_im):
-            self.save_im(im, path_im, im_name="/qr_code_gen.png")
+            util.save_im(im, path_im, im_name="/qr_code_gen.png")
            
         return qr_code_matrix
 
@@ -96,7 +47,8 @@ class CvedEncryptor():
     def generate_transparences(self, qr_code_matrix, save_ims=False, path_im_A="", path_im_B=""):
         """Generate 2 transparences from a qr_code object
         
-        Generate 2 transparences (trans_A and trans_B) from a qr_code object. If the qr code consist on a matrix of size (n x n), the size of the transparences is the double: N = 2*n, (N x N).
+        Generate 2 transparences (trans_A and trans_B) from a qr_code object.
+        If the qr code consist on a matrix of size (n x n), the size of the transparences is the double: N = 2*n, (N x N).
 
         Parameters
         ----------
@@ -142,10 +94,10 @@ class CvedEncryptor():
         
         # this should be separated in other function (maybe the composed ones)
         if(save_ims):
-            im_A = self.gen_image_from_transparence(trans_A)
-            im_B = self.gen_image_from_transparence(trans_B)
-            self.save_im(im=im_A, path_im=path_im_A, im_name="/trans_A_gen.png")   
-            self.save_im(im=im_B, path_im=path_im_B, im_name="/trans_B_gen.png")
+            im_A = util.gen_image_from_transparence(trans_A)
+            im_B = util.gen_image_from_transparence(trans_B)
+            util.save_im(im=im_A, path_im=path_im_A, im_name="/trans_A_gen.png")   
+            util.save_im(im=im_B, path_im=path_im_B, im_name="/trans_B_gen.png")
 
         return trans_A, trans_B
     
