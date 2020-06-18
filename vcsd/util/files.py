@@ -134,10 +134,10 @@ def load_im(path_im=""):
         print(EMOJIS["cross_mark"] + " The path to the image was not provided")
 
 
-def load_and_validate_trans(path_im_A="", path_im_B=""):
-    """Load and validate the image files of the pair of transparencies
+def load_trans_pair(path_im_A="", path_im_B=""):
+    """Load the image files of the pair of transparencies
 
-    Load the image files (in .png format) of the pair of transparencies, check if they are equal sized and the version of the QR code they contain.
+    Load the image files (in .png format) of the pair of transparencies and extract the 2D arrays with the transparences.
     If checks are successful return each transpacencie of the pair as a 2D numpy array.
 
     Parameters
@@ -154,7 +154,6 @@ def load_and_validate_trans(path_im_A="", path_im_B=""):
     trans_B: ndarray
         Transparence B, a 2D array computed from the QR code
     """
-    
     # load images with transparencies
     im_trans_A = load_im(path_im=path_im_A)
     im_trans_B = load_im(path_im=path_im_B) 
@@ -166,16 +165,42 @@ def load_and_validate_trans(path_im_A="", path_im_B=""):
             trans_B = gen_transparence_from_image(im_trans_B)
         except:
             print(EMOJIS["cross_mark"] + f" Unable to properly extract the transparencies information from the loaded images")
-        
+            
+        return trans_A, trans_B
+
+
+def validate_trans_pair(trans_A, trans_B):
+    """Validate the arrays of the pair of transparencies
+
+    Validate if the 2D arrays for the transparencies are equal sized and check the version of the QR code they contain.
+    Return a boolean containing the result of the validation (True is valid, False otherwise).
+
+    Parameters
+    ----------
+    trans_A: ndarray
+        Transparence A, a 2D array computed from the QR code
+    trans_B: ndarray
+        Transparence B, a 2D array computed from the QR code
+
+    Returns
+    -------
+    is_valid: bool
+        True if the pair of transparences is considered valid, False otherwise.
+    """
+    is_valid = False
+    if(trans_A and trans_B):
         # determine version of the hidden qr code
         if(len(trans_A) == len(trans_B)):
             print(EMOJIS["check_mark_button"] + " Loaded transparences are equally sized")
             qr_size = round(len(trans_A)/2)
             detected_version = QR_SIZE_VERSION_DICT[qr_size]
             print(EMOJIS["magnifying_glass"] + f" Loaded transparences correspond to a QR code version {detected_version}")
+            is_valid = True
+            return is_valid
         else:
             print(EMOJIS["cross_mark"] + f" There is size mismatch between both transparencies: {trans_A.shape} and {trans_B.shape}. They need to be equally sized")
-            
-        return trans_A, trans_B
-
+            return is_valid
+    else:
+        print(EMOJIS["cross_mark"] + f" Unable to recognise the transparence/s provided")
+        return is_valid
    
