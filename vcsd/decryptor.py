@@ -12,39 +12,6 @@ class Decryptor():
     """
 
 
-    def apply_decryption(self, path_im_A="", path_im_B="", save_im_extracted_QR=False, path_im_extracted_QR=""):
-        """Obtains the data hidden in two transparencies
-        
-        Perform all the steps needed to retrieve the data encrypted in two transparencies by visual-crypt
-
-        Parameters
-        ----------
-        path_im_A: str
-            Absolute path where the image (in .png format) of the transparence A is stored
-        path_im_B: str
-            Absolute path where the image (in .png format) of the transparence B is stored
-        save_im_extracted_QR: bool, default=False
-            Whether to save recovered QR or not (location by default is current directory)
-        path_im_extracted_QR: str
-            Absolute path where to store the image file of the qr code extracted
-
-        Returns
-        -------
-        data: str
-            Text data extracted from the QR code
-        """
-        # 1 - Load transparencies from the images
-        trans_A, trans_B = util.load_and_validate_trans(path_im_A=path_im_A, path_im_B=path_im_B)
-        # 2 - Extract the QR code encoded in the transparencies
-        qr_matrix_rec = self.extract_qr_from_transparences(trans_A, trans_B)
-        # 3 - Extract the data encoded in the QR code
-        data, im_qr_extracted  = self.extract_data_from_qr_matrix(qr_matrix_rec)
-        if(save_im_extracted_QR):
-            util.save_im(im=im_qr_extracted, path_im=path_im_extracted_QR, im_name="/QR_rec.png")
-
-        return data
-
-
     # TODO create extract_LSB
     # def extract_LSB(steg_A, steg_B):
     #     return dist_trans_A, dist_trans_B
@@ -111,5 +78,10 @@ class Decryptor():
         im_qr_extracted_arr = np.asarray(im_qr_extracted.convert('RGB'))
         detector = cv2.QRCodeDetector()
         data, bbox, straight_qrcode = detector.detectAndDecode(im_qr_extracted_arr)
-        
+        # sometimes images are not properly detected by cv2
+        # rotating the image 90 degrees helps in most of the cases
+        if(data==''):
+            im_qr_extracted_arr = np.rot90(im_qr_extracted_arr)
+            data, bbox, straight_qrcode = detector.detectAndDecode(im_qr_extracted_arr)
+
         return data, im_qr_extracted
