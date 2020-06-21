@@ -75,7 +75,7 @@ def gen_transparence_from_image(im):
 ### SAVE ###
 
 
-def save_im(im, path_im, im_name="/image_gen.png"):
+def save_im(im, path_im, im_name="image_gen.png"):
     """Save an image file from an image object
     
     Save a file with an image generated from an incoming image object
@@ -86,12 +86,12 @@ def save_im(im, path_im, im_name="/image_gen.png"):
         Image object, instance of the PIL Image class
     path_im: str
         Absolute path where to store the qr image file
-    im_name: str, default="/image_gen.png"
+    im_name: str, default="image_gen.png"
         Name for the generated file
     """
     if(path_im==""):
         try:
-            dirpath = os.getcwd() + im_name
+            dirpath = os.path.join(os.getcwd(), im_name)
             im.save(dirpath, 'png')
             print(EMOJIS["check_mark_button"] + f" Image successfully saved at {dirpath}")
         except:
