@@ -8,7 +8,8 @@ from PIL import Image
 EMOJIS = {
     "check_mark_button":    "\U00002705",
     "cross_mark":           "\U0000274C",
-    "magnifying_glass":     "\U0001F50D"
+    "magnifying_glass":     "\U0001F50D",
+    "detective":            "\U0001F575"
 }
 
 # key: value
@@ -93,15 +94,17 @@ def save_im(im, path_im, im_name="image_gen.png"):
         try:
             dirpath = os.path.join(os.getcwd(), im_name)
             im.save(dirpath, 'png')
-            print(EMOJIS["check_mark_button"] + f" Image successfully saved at {dirpath}")
+            print(EMOJIS["check_mark_button"] + f" Image successfully saved at '{dirpath}'")
         except:
-            print(EMOJIS["cross_mark"] + f" Unable to correctly save the image at {dirpath}")
+            print(EMOJIS["cross_mark"] + f" Unable to correctly save the image at '{dirpath}'")
     else:
         try:
             im.save(path_im, 'png')
-            print(EMOJIS["check_mark_button"] + f" Image successfully saved at {path_im}")
+            print(EMOJIS["check_mark_button"] + f" Image successfully saved at '{path_im}'")
+        except FileNotFoundError as fnf_error:
+            print(EMOJIS["cross_mark"], fnf_error)
         except:
-            print(EMOJIS["cross_mark"] + f" Unable to find the path specified: {path_im}")
+            print(EMOJIS["cross_mark"] + f" Unable to save the image at the path specified: '{path_im}'")
 
 
 
@@ -126,10 +129,12 @@ def load_im(path_im=""):
     if(path_im!=""):
         try:
             im = Image.open(path_im, mode="r")
-            print(EMOJIS["check_mark_button"] + f" Image successfully loaded from {path_im}")
+            print(EMOJIS["check_mark_button"] + f" Image successfully loaded from '{path_im}'")
             return im
+        except FileNotFoundError as fnf_error:
+            print(EMOJIS["cross_mark"], fnf_error)
         except:
-            print(EMOJIS["cross_mark"] + f" Unable to correctly load the image from {path_im}")
+            print(EMOJIS["cross_mark"] + f" Unable to correctly load the image from '{path_im}'")
     else:
         print(EMOJIS["cross_mark"] + " The path to the image was not provided")
 
@@ -165,7 +170,7 @@ def load_trans_pair(path_im_A="", path_im_B=""):
             trans_B = gen_transparence_from_image(im_trans_B)
         except:
             print(EMOJIS["cross_mark"] + f" Unable to properly extract the transparencies information from the loaded images")
-            
+            print(EMOJIS["detective"]  + f" Probably one or both of them have incorrect format")
         return trans_A, trans_B
 
 
@@ -188,14 +193,17 @@ def validate_trans_pair(trans_A, trans_B):
         True if the pair of transparences is considered valid, False otherwise.
     """
     is_valid = False
-    if(trans_A and trans_B):
+    if(trans_A.any() and trans_B.any()):
         # determine version of the hidden qr code
-        if(len(trans_A) == len(trans_B)):
-            print(EMOJIS["check_mark_button"] + " Loaded transparences are equally sized")
+        if((len(trans_A) == len(trans_B)) and (trans_A!=trans_B).any()):
+            print(EMOJIS["check_mark_button"] + " Loaded transparences are equally sized and different")
             qr_size = round(len(trans_A)/2)
             detected_version = QR_SIZE_VERSION_DICT[qr_size]
             print(EMOJIS["magnifying_glass"] + f" Loaded transparences correspond to a QR code version {detected_version}")
             is_valid = True
+            return is_valid
+        elif((trans_A==trans_B).all()):
+            print(EMOJIS["cross_mark"] + f" Both transparencies are equal, no data can be extracted from two equal transparencies")
             return is_valid
         else:
             print(EMOJIS["cross_mark"] + f" There is size mismatch between both transparencies: {trans_A.shape} and {trans_B.shape}. They need to be equally sized")
