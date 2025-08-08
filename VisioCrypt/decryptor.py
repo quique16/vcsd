@@ -6,9 +6,16 @@ from PIL import Image
 
 import VisioCrypt.util as util
 
-# TODO docstring for CvedDecryptor class
+
 class Decryptor():
-    """
+    """Operations to recover data from a pair of transparencies.
+
+    The :class:`Decryptor` class performs the inverse operations of
+    :class:`~VisioCrypt.encryptor.Encryptor`.  Given two transparency matrices
+    it reconstructs the original QR code and extracts the encoded text.
+
+    The class does not hold any state; a single instance can process many
+    transparency pairs.
     """
 
 

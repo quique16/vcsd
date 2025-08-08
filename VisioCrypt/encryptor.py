@@ -6,10 +6,21 @@ from PIL import Image
 
 import VisioCrypt.util as util
 
-# TODO docstring for CvedEncryptor class
+
 class Encryptor():
-    '''
-    '''
+    """High level helper to generate QR codes and visual shares.
+
+    The :class:`Encryptor` class provides the pieces needed to transform a
+    piece of text into two *transparencies* that visually encrypt the
+    information.  It currently exposes utilities to:
+
+    * Create a QR code matrix from arbitrary data.
+    * Split the QR code into two binary matrices that can later be combined
+      to recover the original code.
+
+    Instances of this class are stateless and can be reused for multiple
+    encryptions.
+    """
 
 
     def generate_qr(self, data):
