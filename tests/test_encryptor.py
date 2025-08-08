@@ -1,25 +1,34 @@
 import os
-import qrcode
 import numpy as np
+from PIL import Image
+
 from vcsd.encryptor import Encryptor
 from vcsd.decryptor import Decryptor
 
-cwd = os.getcwd()
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 enc = Encryptor()
 dec = Decryptor()
 
-# text stored in the qr code
-test_correct_data="test"
+# text stored in the QR code
+test_correct_data = "test"
 
-# numpy array with the qr that is generated from the message
-test_correct_generated_qr_path = os.path.join(cwd, "tests", "data", "qr_matrix_with_word_test_as_content.npy")
+# numpy array with the QR that is generated from the message
+test_correct_generated_qr_path = os.path.join(
+    DATA_DIR, "qr_matrix_with_word_test_as_content.npy"
+)
 test_correct_generated_qr_matrix = np.load(test_correct_generated_qr_path)
 
 
 # QR code generation TEST
 def test_generate_qr():
     generated_qr, im_qr_code = enc.generate_qr(data=test_correct_data)
+    # validate that the generated matrix matches the precomputed one
     assert np.array_equal(test_correct_generated_qr_matrix, generated_qr)
+    # ensure only binary values are present
+    assert np.isin(generated_qr, [0, 1]).all()
+    # the returned image must be convertible to a PIL Image instance
+    assert isinstance(im_qr_code.get_image(), Image.Image)
 
 # Generation of transparencies from QR code TEST
 def test_generate_transparences():
@@ -37,5 +46,16 @@ def test_generate_transparences():
     assert np.isin(trans_A, [0, 1]).all()
     assert np.isin(trans_B, [0, 1]).all()
 
-    # it checks that what is recovered is the same as what was encrypted
+    # verify relationship of blocks depending on the original QR bit
+    for i in range(0, trans_A.shape[0], 2):
+        for j in range(0, trans_A.shape[1], 2):
+            block_A = trans_A[i:i + 2, j:j + 2]
+            block_B = trans_B[i:i + 2, j:j + 2]
+            qr_bit = test_correct_generated_qr_matrix[i // 2, j // 2]
+            if qr_bit == 0:
+                assert np.array_equal(block_A, block_B)
+            else:
+                assert np.array_equal(block_A, 1 - block_B)
+
+    # ensure that what is recovered is the same as what was encrypted
     assert np.array_equal(test_correct_generated_qr_matrix, extracted_QR_matrix)
