@@ -1,79 +1,77 @@
 # vcsd
 
-Paquete de **criptografía visual** orientado a ocultar mensajes de texto en un
-código QR, generando dos transparencias que al superponerse revelan el
-contenido.
+**Visual cryptography** package designed to hide text messages inside a QR
+code, generating two transparencies that reveal the content when overlaid.
 
-## Instalación
+## Installation
 
-1. Clona este repositorio y entra en él:
+1. Clone this repository and enter it:
 
    ```bash
-   git clone https://github.com/<usuario>/vcsd.git
+   git clone https://github.com/<user>/vcsd.git
    cd vcsd
    ```
 
-2. Instala el paquete con `pip`:
+2. Install the package with `pip`:
 
    ```bash
    python -m pip install .
    ```
 
-   Si se quiere realizar una instalación editable para desarrollo puede
-   usarse:
+   For an editable installation for development you can use:
 
    ```bash
    python -m pip install -e .
    ```
 
-## Uso
+## Usage
 
-El módulo `vcsd.main` ofrece funciones de alto nivel para cifrar y descifrar
-mensajes. El flujo básico consta de dos pasos: generar las transparencias a
-partir del texto y recuperar el mensaje desde ellas.
+The `vcsd.main` module provides high-level functions for encrypting and
+decrypting messages. The basic workflow consists of two steps: generating the
+transparencies from the text and recovering the message from them.
 
-### Cifrado
+### Encryption
 
 ```python
 from vcsd.main import apply_encryption
 
 trans_A, trans_B = apply_encryption(
-    "mensaje secreto",
+    "secret message",
     save_ims_gen_trans=True,
     path_im_A="trans_A.png",
     path_im_B="trans_B.png",
 )
 ```
 
-El ejemplo anterior genera un código QR con el texto especificado y produce dos
-transparencias (`trans_A.png` y `trans_B.png`). Al superponerlas se puede
-recuperar el mensaje original.
+The example above generates a QR code with the specified text and produces two
+transparencies (`trans_A.png` and `trans_B.png`). When they are overlaid, the
+original message can be recovered.
 
-### Descifrado
+### Decryption
 
 ```python
 from vcsd.main import apply_decryption
 
-mensaje = apply_decryption(trans_A=trans_A, trans_B=trans_B)
-print(mensaje)  # imprime: "mensaje secreto"
+message = apply_decryption(trans_A=trans_A, trans_B=trans_B)
+print(message)  # prints: "secret message"
 ```
 
-También es posible cargar las transparencias desde archivos:
+It is also possible to load the transparencies from files:
 
 ```python
-mensaje = apply_decryption(
+message = apply_decryption(
     load_from_files=True,
     path_im_A="trans_A.png",
     path_im_B="trans_B.png",
 )
 ```
 
-## Estructura del paquete
+## Package structure
 
 ```
 vcsd/
-├── encryptor.py  # Genera el QR y las transparencias
-├── decryptor.py  # Recupera el mensaje a partir de las transparencias
-└── main.py       # Funciones de alto nivel (apply_encryption, apply_decryption)
+├── encryptor.py  # Generates the QR and the transparencies
+├── decryptor.py  # Recovers the message from the transparencies
+└── main.py       # High-level functions (apply_encryption, apply_decryption)
 ```
 
