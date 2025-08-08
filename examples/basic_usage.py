@@ -1,6 +1,6 @@
 """Encrypt and decrypt a message in memory."""
 
-from VisioCrypt import apply_encryption, apply_decryption
+from visiocrypt import apply_encryption, apply_decryption
 
 
 def main() -> None:

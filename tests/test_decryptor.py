@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 import pytest
 
-from VisioCrypt.decryptor import Decryptor
+from visiocrypt import Decryptor
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")

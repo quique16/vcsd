@@ -4,24 +4,24 @@ API Reference
 Encryptor
 ---------
 
-.. autoclass:: VisioCrypt.encryptor.Encryptor
+.. autoclass:: visiocrypt.crypto.encryptor.Encryptor
    :members:
 
 Decryptor
 ---------
 
-.. autoclass:: VisioCrypt.decryptor.Decryptor
+.. autoclass:: visiocrypt.crypto.decryptor.Decryptor
    :members:
 
 Utilities
 ---------
 
-.. automodule:: VisioCrypt.util.files
+.. automodule:: visiocrypt.utils.files
    :members:
 
 CLI
 ---
 
-.. autofunction:: VisioCrypt.main.apply_encryption
+.. autofunction:: visiocrypt.api.apply_encryption
 
-.. autofunction:: VisioCrypt.main.apply_decryption
+.. autofunction:: visiocrypt.api.apply_decryption
