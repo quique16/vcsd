@@ -158,20 +158,27 @@ def load_trans_pair(path_im_A="", path_im_B=""):
         Transparence A, a 2D array computed from the QR code
     trans_B: ndarray
         Transparence B, a 2D array computed from the QR code
+
+    Raises
+    ------
+    ValueError
+        If one or both transparency images are missing or cannot be loaded.
     """
     # load images with transparencies
     im_trans_A = load_im(path_im=path_im_A)
-    im_trans_B = load_im(path_im=path_im_B) 
-    
+    im_trans_B = load_im(path_im=path_im_B)
+
     if(im_trans_A and im_trans_B):
         try:
             # extract binary matrices
             trans_A = gen_transparence_from_image(im_trans_A)
             trans_B = gen_transparence_from_image(im_trans_B)
+            return trans_A, trans_B
         except:
             print(EMOJIS["cross_mark"] + f" Unable to properly extract the transparencies information from the loaded images")
             print(EMOJIS["detective"]  + f" Probably one or both of them have incorrect format")
-        return trans_A, trans_B
+    else:
+        raise ValueError("Both transparency images must be provided")
 
 
 def validate_trans_pair(trans_A, trans_B):
