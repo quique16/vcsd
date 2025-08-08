@@ -1,17 +1,15 @@
-import os
 import cv2
 import qrcode
 import numpy as np
-from PIL import Image
 
-import VisioCrypt.util as util
+from .. import utils as util
 
 
 class Decryptor():
     """Operations to recover data from a pair of transparencies.
 
     The :class:`Decryptor` class performs the inverse operations of
-    :class:`~VisioCrypt.encryptor.Encryptor`.  Given two transparency matrices
+    :class:`~visiocrypt.crypto.encryptor.Encryptor`.  Given two transparency matrices
     it reconstructs the original QR code and extracts the encoded text.
 
     The class does not hold any state; a single instance can process many

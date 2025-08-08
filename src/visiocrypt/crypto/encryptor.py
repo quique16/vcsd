@@ -1,10 +1,5 @@
-import os
 import qrcode
-import random
 import numpy as np
-from PIL import Image
-
-import VisioCrypt.util as util
 
 
 class Encryptor():

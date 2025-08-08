@@ -1,4 +1,4 @@
-Welcome to VisioCrypt's documentation!
+Welcome to Visiocrypt's documentation!
 ======================================
 
 .. toctree::

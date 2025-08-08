@@ -1,6 +1,6 @@
 """Save generated transparencies and decrypt from the saved files."""
 
-from VisioCrypt import apply_encryption, apply_decryption
+from visiocrypt import apply_encryption, apply_decryption
 
 
 def main() -> None:
