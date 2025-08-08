@@ -11,7 +11,7 @@ setup(
     long_description_content_type="text/markdown",
     classifiers=[
         'Programming Language :: Python :: 3.7',
-        'Topic :: Cryptography',
+        'Topic :: Security :: Cryptography',
     ],
     author='Enrique Pedruelo',
     author_email="epedruelo5@gmail.com",

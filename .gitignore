@@ -14,3 +14,4 @@
 # jupyter notebooks checkpoints
 /tests/.ipynb_checkpoints/
 
+.DS_Store

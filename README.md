@@ -5,23 +5,10 @@ code, generating two transparencies that reveal the content when overlaid.
 
 ## Installation
 
-1. Clone this repository and enter it:
+1. Install the package with `pip`:
 
    ```bash
-   git clone https://github.com/<user>/VisioCrypt.git
-   cd VisioCrypt
-   ```
-
-2. Install the package with `pip`:
-
-   ```bash
-   python -m pip install .
-   ```
-
-   For an editable installation for development you can use:
-
-   ```bash
-   python -m pip install -e .
+   pip install visiocrypt
    ```
 
 ## Usage
