@@ -1,4 +1,4 @@
-# VisioCrypt
+# visiocrypt
 
 **Visual cryptography** package designed to hide text messages inside a QR
 code, generating two transparencies that reveal the content when overlaid.
@@ -8,8 +8,8 @@ code, generating two transparencies that reveal the content when overlaid.
 1. Clone this repository and enter it:
 
    ```bash
-   git clone https://github.com/<user>/VisioCrypt.git
-   cd VisioCrypt
+   git clone https://github.com/<user>/visiocrypt.git
+   cd visiocrypt
    ```
 
 2. Install the package with `pip`:
@@ -26,14 +26,14 @@ code, generating two transparencies that reveal the content when overlaid.
 
 ## Usage
 
-The `VisioCrypt.main` module provides high-level functions for encrypting and
+The `visiocrypt.main` module provides high-level functions for encrypting and
 decrypting messages. The basic workflow consists of two steps: generating the
 transparencies from the text and recovering the message from them.
 
 ### Encryption
 
 ```python
-from VisioCrypt.main import apply_encryption
+from visiocrypt.main import apply_encryption
 
 trans_A, trans_B = apply_encryption(
     "secret message",
@@ -50,7 +50,7 @@ original message can be recovered.
 ### Decryption
 
 ```python
-from VisioCrypt.main import apply_decryption
+from visiocrypt.main import apply_decryption
 
 message = apply_decryption(trans_A=trans_A, trans_B=trans_B)
 print(message)  # prints: "secret message"
@@ -69,9 +69,10 @@ message = apply_decryption(
 ## Package structure
 
 ```
-VisioCrypt/
-├── encryptor.py  # Generates the QR and the transparencies
-├── decryptor.py  # Recovers the message from the transparencies
-└── main.py       # High-level functions (apply_encryption, apply_decryption)
+src/
+└── visiocrypt/
+    ├── encryptor.py  # Generates the QR and the transparencies
+    ├── decryptor.py  # Recovers the message from the transparencies
+    └── main.py       # High-level functions (apply_encryption, apply_decryption)
 ```
 
