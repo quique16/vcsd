@@ -28,5 +28,14 @@ def test_generate_transparences():
     # in order to test the proper generation of them, the recovery needs to be performed as well
     trans_A, trans_B = enc.generate_transparences(test_correct_generated_qr_matrix)
     extracted_QR_matrix = dec.extract_qr_from_transparences(trans_A, trans_B)
+    # ensure transparencies are twice the size of the original QR
+    qr_h, qr_w = test_correct_generated_qr_matrix.shape
+    assert trans_A.shape == (qr_h * 2, qr_w * 2)
+    assert trans_B.shape == (qr_h * 2, qr_w * 2)
+
+    # ensure transparencies contain only binary values
+    assert np.isin(trans_A, [0, 1]).all()
+    assert np.isin(trans_B, [0, 1]).all()
+
     # it checks that what is recovered is the same as what was encrypted
     assert np.array_equal(test_correct_generated_qr_matrix, extracted_QR_matrix)
