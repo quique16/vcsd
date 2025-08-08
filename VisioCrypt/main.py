@@ -1,6 +1,6 @@
-from vcsd.encryptor import Encryptor
-from vcsd.decryptor import Decryptor
-import vcsd.util as util
+from VisioCrypt.encryptor import Encryptor
+from VisioCrypt.decryptor import Decryptor
+import VisioCrypt.util as util
 
 
 def apply_encryption(data, save_im_gen_QR=False, path_im_QR="", save_ims_gen_trans=False, path_im_A="", path_im_B=""):
