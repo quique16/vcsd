@@ -5,8 +5,8 @@
 ### Encryption module
 
 ```python
-class CvedEncryptor():
-    def generate_qr(text):
+class Encryptor():
+    def generate_qr(data):
         return qr_code
     def generate_transparences(qr_code):
         return trans_A, trans_B
@@ -19,13 +19,13 @@ class CvedEncryptor():
 ### Decryption module
 
 ```python
-class CvedDecryptor():
+class Decryptor():
     def extract_LSB(steg_A, steg_B):
         return dist_trans_A, dist_trans_B
     def clean_distortion(dist_trans_A, dist_trans_B):
         return trans_A, trans_B
     def extract_qr_from_transparences(trans_A, trans_B):
-        return qr_code
-    def extract_text_from_qr(qr_code):
-        return text
+        return qr_matrix
+    def extract_data_from_qr_matrix(qr_matrix):
+        return data
 ```

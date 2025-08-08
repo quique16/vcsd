@@ -6,7 +6,7 @@ from PIL import Image
 
 import vcsd.util as util
 
-# TODO docstring for CvedEncryptor class
+# TODO docstring for Encryptor class
 class Encryptor():
     '''
     '''
