@@ -143,7 +143,7 @@ def load_trans_pair(path_im_A="", path_im_B=""):
     """Load the image files of the pair of transparencies
 
     Load the image files (in .png format) of the pair of transparencies and extract the 2D arrays with the transparences.
-    If checks are successful return each transpacencie of the pair as a 2D numpy array.
+    If checks are successful return each transparency of the pair as a 2D numpy array.
 
     Parameters
     ----------
