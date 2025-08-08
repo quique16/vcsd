@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='vcsd',
+    name='VisioCrypt',
     version='0.1',
     description='Package to encrypt short messages',
     long_description=long_description,
@@ -15,7 +15,7 @@ setup(
     ],
     author='Enrique Pedruelo',
     author_email="epedruelo5@gmail.com",
-    packages=['vcsd'],  
+    packages=['VisioCrypt'],
     install_requires=[
         'qrcode',
     ],

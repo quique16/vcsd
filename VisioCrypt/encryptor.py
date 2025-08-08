@@ -4,7 +4,7 @@ import random
 import numpy as np
 from PIL import Image
 
-import vcsd.util as util
+import VisioCrypt.util as util
 
 # TODO docstring for CvedEncryptor class
 class Encryptor():

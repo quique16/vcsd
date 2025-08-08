@@ -2,8 +2,8 @@ import os
 import numpy as np
 from PIL import Image
 
-from vcsd.encryptor import Encryptor
-from vcsd.decryptor import Decryptor
+from VisioCrypt.encryptor import Encryptor
+from VisioCrypt.decryptor import Decryptor
 
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
