@@ -1,10 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='VisioCrypt',
+    name='visiocrypt',
     version='0.1',
     description='Package to encrypt short messages',
     long_description=long_description,
@@ -15,10 +15,11 @@ setup(
     ],
     author='Enrique Pedruelo',
     author_email="epedruelo5@gmail.com",
-    packages=['VisioCrypt'],
+    packages=find_packages(where='src'),
+    package_dir={'': 'src'},
     install_requires=[
         'qrcode',
     ],
     include_package_data=True,
-    zip_safe=False
+    zip_safe=False,
 )
